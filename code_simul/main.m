@@ -1,7 +1,7 @@
 %% settings
 clear; clc; close;
 
-path0 = 'your_project_folder';
+path0 = 'your-project-path';
 cd([path0 '\code_simul'])
 addpath([path0 '\code_basic'])
 basicSettings;
@@ -40,37 +40,7 @@ for seed = seed_list
         
         % setting random generation
         rng(seed)
-        
-        % load initial network 
-        net = initAlexnet([227 227 mode.numChannel], mode.numClass, [29 29], mode.convfix, mode.inputProcess, ...
-           mode.w_initializer, mode.b_initializer);
-        
-        % add filters or not
-        if contains(suffix, 'gabor') || contains(suffix, 'gau') || ...
-                contains(suffix, 'dog') || contains(suffix, 'comb')
-            net = addfilter([pathData 'filter parameters\'], net, suffix);
-            disp("Filter added!")
-        end
-
-        % if randomly fixed networks
-        if contains(suffix, 'gabor') || contains(suffix, 'gau') || ...
-                contains(suffix, 'dog') || contains(suffix, 'comb') || contains(suffix, 'rand')
-            mode.fix = 1;
-        else
-            mode.fix = 0;
-        end
-
-        % if gabor with nonfix
-        if contains(suffix, 'nofix')
-            mode.fix = 0;
-        end
-
-        simul_sequential(seed, net, name, suffix, mode)
+        simul_sequential(seed, name, suffix, mode)
     end
     toc
 end
-
-
-
-
-

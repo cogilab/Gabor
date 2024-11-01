@@ -4,7 +4,6 @@ function [] = simul_sequential(seed, name, suffix, mode)
 basicSettings;
 rng(seed);
 
-
 %% load network
 filter_size = [30 30];
 
@@ -124,9 +123,8 @@ disp(['Suffix = ' suffix])
 fprintf("Images = ")
 disp(name)
 
+%%% First training
 if mode.simulation == 1 || mode.simulation == 0
-    %%%%%%%% Phase 1 training %%%%%%%%
-    %% Main trainings - DNN vs. DNN + Gabor (3 types)    
     suffix_all = [suffix0 suffix '.mat'];
     
     % Training 1
@@ -145,10 +143,8 @@ if mode.simulation == 1 || mode.simulation == 0
     fprintf('\n')
 end
 
+%%% Second training
 if mode.simulation == 2 || mode.simulation == 0
-    %%%%%%%% Phase 2 training %%%%%%%%
-    %% Main trainings - DNN vs. DNN + Gabor (original, high, low)
-    % DNN / DNN + Gabor
     suffix_all = [suffix0 suffix '.mat'];
 
     load([pathResult_simul_save num2str(seed) 'Trained_nn_' name_true{1} '_' suffix_all]);

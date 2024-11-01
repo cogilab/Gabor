@@ -1,5 +1,5 @@
 %%% Path Setting
-path0 = 'your_project_folder';
+path0 = 'your-project-path';
 addpath([path0 '/code_basic'])
 
 pathResult = [path0 '/results/'];
