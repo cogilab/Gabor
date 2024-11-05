@@ -30,7 +30,3 @@ whiskers = findobj(gca, 'Tag', 'Lower Whisker');
 set(whiskers, 'Color', 'k', 'LineStyle', '-');
 whiskers = findobj(gca, 'Tag', 'Upper Whisker');
 set(whiskers, 'Color', 'k', 'LineStyle', '-');
-
-% % xlimit
-% n = size(data, 2);
-% xlim([0 n+1])

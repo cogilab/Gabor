@@ -5,8 +5,6 @@ else
     Widths = 0.5;
 end
 
-
-
 h = boxplot(data, 'Colors', 'k', 'Widths', Widths); 
 boxes = findobj(gca, 'Tag', 'Box');
 for k = 1:length(boxes)
@@ -41,8 +39,6 @@ s.MarkerEdgeColor ='none';
 s.MarkerFaceColor = color;
 s.MarkerFaceAlpha = alpha; s.MarkerEdgeAlpha = alpha;
 s.SizeData = 10;
-% s.AlphaData = ones(length(reshape(data, [], 1)), 1) * 10;
-% s.MarkerFaceAlpha = 'flat';
 
 for nn = 1:size(data, 1)
     plot((1:size(data, 2)) +shift, data(nn, :), 'Color', [color alpha])

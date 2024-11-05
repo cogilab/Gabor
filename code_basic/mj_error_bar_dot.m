@@ -5,14 +5,6 @@ end
 
 m = mean(data, 1);
 err = std(data, 1) / sqrt(size(data, 2));
-% 
-% if ~isempty(varargin)
-%     if strcmp(varargin{1}, 'std')
-%         err = std(data, 1);
-%     elseif strcmp(varargin{1}, 'err')
-%         err = std{data, 1} / sqrt(size(data, 2));
-%     end
-% end
 
 b = bar(x, m);
 hold on
@@ -29,8 +21,6 @@ s.MarkerEdgeColor = 'none';
 s.MarkerFaceColor = [0.3 0.3 0.3];
 s.MarkerFaceAlpha = 0.3; 
 s.SizeData = 10;
-% s.AlphaData = ones(length(reshape(data, [], 1)), 1) * 10;
-% s.MarkerFaceAlpha = 'flat';
 
 hold off
 

@@ -1,12 +1,4 @@
 function [net] = initAlexnet(size_in, size_out, size_filter, convfix, inputProcess, w_initializer, b_initializer)
-%% Generate initialized Alexnet %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% size_in : input size e.g. [227 227 1]
-% size out : output classification numbers e.g. 10
-% size_filter : filte size of a first convolutional layer e.g. [11 11]
-% include gabor(bool): 1 if include, 0 if not include
-% varargin{1} : specify Gabor parameter files e.g. 'high', 'low'
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %% initial network
 layers = alexnet('Weights', 'none');
 

@@ -107,9 +107,6 @@ numValid = augimdsValid.NumObservations;
 
 %%% Training loop
 iteration = 0; epoch = 0; lossValidation = 0; accuracyValidation = 0;
-% fprintf(1, 'Computation Progress: %3d%%\n', ceil(iteration/numIteration))
-
-count = 0;
 
 while epoch < numEpoch && ~monitor.Stop
     epoch = epoch + 1;
@@ -132,24 +129,6 @@ while epoch < numEpoch && ~monitor.Stop
         %%% Training & Update
         [X,Y] = next(mbqTrain);
 
-        % % normalization
-        % layer = net.Layers(1, 1);
-        % layer.Mean = gather(extractdata(mean(X, [1 2 4])));
-        % net = replaceLayer(net, 'input', layer);
-        % net = dlnetwork(net.Layers);
-        
-        % % Befor training, show images randomly
-        % if count == 0
-        %     f = figure;
-        %     inds = randi([1 size(X, 4)], [1 9]);
-        %     for ii = 1:length(inds)
-        %         subplot(3,3,ii)
-        %         imagesc(rescale(gather(extractdata(squeeze(X(:, :, :, inds(ii)))))))
-        %     end
-        %     pause(3);
-        %     close(f)
-        %     count = count + 1;
-        % end
         % training acc / loss
         [lossTrain,gradients,state] = dlfeval(accfun,net,X,Y,idxWeights,param_L2);
         net.State = state;
@@ -157,18 +136,11 @@ while epoch < numEpoch && ~monitor.Stop
         % Update the network parameters using the SGDM optimizer.
         [net,averageGrad,averageSqGrad] = adamupdate(net,gradients,averageGrad,averageSqGrad,iteration,...
             learningRate);
-
-        
-        % Update the network parameters using the SGDM optimizer.
-        % [net,vel] = sgdmupdate(net,gradients,vel,learningRate, momentum);
         
         %%% validation acc / loss
         if rem(iteration-1, validationFrequency) == 0
             % for first validation
             reset(mbqValid);
-            
-            % update progress monitor
-            % fprintf(1,'\b\b\b\b%3.0f%%', floor(100 * iteration/numIteration));
             
             % calculate validation accuracy
             accuracyValidation = 0; lossValidation = 0;
@@ -243,19 +215,9 @@ function [loss,gradients, state] = modelLoss(net,X,Y,idxWeights,param_L2)
     % with/without dropouts
     [YPred, state] = forward(net,X);   
     
-    % % acc calculation
-    % YPred_temp = single(onehotdecode(YPred, 1:net.Layers(final_fc_indx-1, 1).OutputSize, 1)');
-    % accuracy = sum(YPred_temp == Y) / length(Y);
-    
     % loss calculation
     Y = onehotencode(Y, 2, 'ClassNames', 1:net.Layers(final_fc_indx-1, 1).OutputSize)';
     loss = crossentropy(YPred,Y);    
-    
-    % % L2 loss
-    % allParams = net.Learnables(idxWeights,:).Value;
-    % L = dlupdate(@(x) sum(x.^2,"all"),allParams);
-    % L = sum(cat(1,L{:}));  
-    % loss = loss  + L * 0.5 * param_L2;
     
     % gradients
     gradients = dlgradient(loss,net.Learnables);  

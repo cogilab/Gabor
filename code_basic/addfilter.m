@@ -1,4 +1,5 @@
-function [net] = addfilter(pathParam, net, suffix, varargin)
+function [net] = addfilter(~, net, suffix, varargin)
+
 % initial weights & parameters
 size_weights = size(net.Layers(2, 1).Weights);
 Weights = zeros(size_weights);
@@ -38,38 +39,6 @@ if contains(suffix, 'V1')
             Weights(:, :, channel, ii) = filt;
         end
     end
-
-elseif contains(suffix, 'gabor') || contains(suffix, 'comb') || contains(suffix, 'gau')
-    param_tot = load([pathParam 'param' suffix '.mat']);
-    for channel = 1:size(Weights, 3)
-        for ii = 1:size(Weights, 4)
-            param = param_tot.param_tot(:, ii)';
-
-            filt = makeGabor(size_weights(1:2), param);
-            if contains(suffix, 'gau')
-                filt = filt / (2 * pi * param(1)^2);
-                Weights(:, :, channel, ii) = filt;
-            else
-                filt = (filt - mean(filt(:))) / std(filt(:));
-                Weights(:, :, channel, ii) = filt ...
-                * sqrt(2 / (prod(size_weights(1:3))));
-            end
-        end
-    end
-
-elseif contains(suffix, 'dog')
-    param_tot = load([pathParam 'param' suffix '.mat']);
-    for channel = 1:size(Weights, 3)
-        for ii = 1:size(Weights, 4)
-            param = param_tot.param_tot(:, ii)';
-
-            filt = makeDoG(size_weights(1:2), param);
-            filt = (filt - mean(filt(:))) / std(filt(:));
-
-            Weights(:, :, channel, ii) = filt ...
-                .* sqrt(2 / (prod(size_weights(1:3))));
-        end
-    end
 end
 
 % new conv1 layers
@@ -80,9 +49,7 @@ conv1Layer = convolution2dLayer(size_weights(1:2), size_weights(4), 'Name', 'con
 net = replaceLayer(net, 'conv1', conv1Layer);
 net = dlnetwork(layerGraph(net), initialize=true);
 
-
-
-%%% FUNCTIONS FOR V1 SAMPLING
+%% Subfunctions
 function [sf, ori, phase, nx, ny] = generate_gabor_param(features, seed, sf_corr, varargin)
     rng(seed);
     

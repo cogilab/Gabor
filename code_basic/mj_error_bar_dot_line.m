@@ -25,8 +25,6 @@ s.MarkerEdgeColor ='none';
 s.MarkerFaceColor = color;
 s.MarkerFaceAlpha = alpha; s.MarkerEdgeAlpha = alpha;
 s.SizeData = 10;
-% s.AlphaData = ones(length(reshape(data, [], 1)), 1) * 10;
-% s.MarkerFaceAlpha = 'flat';
 
 for nn = 1:size(data, 1)
     plot(1:size(data, 2), data(nn, :), 'Color', [color alpha])
